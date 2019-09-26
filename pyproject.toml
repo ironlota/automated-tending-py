@@ -13,6 +13,7 @@ qtpy = "^1.9.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.1"
+flake8 = "^3.7"
 
 [build-system]
 requires = ["poetry>=0.12"]

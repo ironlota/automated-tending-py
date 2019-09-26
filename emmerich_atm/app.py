@@ -3,6 +3,7 @@ Automated Tending Machine
 """
 
 import sys
+
 from qtpy import QtWidgets
 
 class EmmerichAutomatedTendingApp(QtWidgets.QMainWindow):
@@ -13,9 +14,9 @@ class EmmerichAutomatedTendingApp(QtWidgets.QMainWindow):
     def init_ui(self):
         self.setWindowTitle('Emmerich Automated Tending')
         self.show()
-
         
 def main():
     app = QtWidgets.QApplication(sys.argv)
     main_window = EmmerichAutomatedTendingApp()
+    second_main_window = EmmerichAutomatedTendingApp()
     sys.exit(app.exec_())
