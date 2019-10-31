@@ -3,6 +3,7 @@ Automated Tending Machine
 """
 
 import sys
+
 from qtpy import QtWidgets
 
 from .state import State
