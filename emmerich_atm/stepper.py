@@ -24,8 +24,18 @@ class StepperConfiguration:
     reverse: bool = False
 
 class Stepper():
+    r"""Stepper Wrapper for A4988 Motor Driver
+
+    Arguments
+        sleep_pin (int) : Sleep GPIO Pin
+        step_pin (int) : Step GPIO Pin
+        direction_pin (int) : Direction GPIO Pin
+        step_pin (int) : Step GPIO Pin
+        reverse (bool, optional) : Moving backward?
+        step_type (StepType, optional) : Step full, half, quarter, one_eight, or one_sixteenth
+    """
     def __init__(self,
-                 # sleep_pin: int,
+                 sleep_pin: int,
                  step_pin: int,
                  direction_pin: int,
                  reverse: bool = False,
@@ -49,14 +59,16 @@ class Stepper():
                 steps: int,
                 reverse: bool = False,
                 step_type: StepType = StepType.FULL,
-                init_delay: int = .05,
-                step_delay: int = .005) -> NoReturn:
+                init_delay: float = .05,
+                step_delay: float = .005) -> NoReturn:
         r"""Forward movements.
 
         Arguments
-            steps (int): number of steps that stepper will do
-            reverse (bool): move backward or counterclockwise
-            step_type (StepType): type of step
+            steps (int) : number of steps that stepper will do
+            reverse (bool) : move backward or counterclockwise
+            step_type (StepType) : type of step
+            init_delay (float) : initialization delay before start moving
+            step_delay (float) : delay between each step
         """
 
         # self.sleep.off()

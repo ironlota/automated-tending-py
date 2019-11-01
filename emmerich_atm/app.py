@@ -14,8 +14,8 @@ class EmmerichAutomatedTendingApp(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
         self.init_ui()
-        self.stepper_x = Stepper(step_pin=23, direction_pin=24)
-        self.stepper_y = Stepper(step_pin=22, direction_pin=25)
+        self.stepper_x = Stepper(sleep_pin=0, step_pin=23, direction_pin=24)
+        self.stepper_y = Stepper(sleep_pin=0, step_pin=22, direction_pin=25)
 
     def init_ui(self):
         self.setWindowTitle('Emmerich Automated Tending')
@@ -28,4 +28,5 @@ class EmmerichAutomatedTendingApp(QtWidgets.QMainWindow):
 def main():
     app = QtWidgets.QApplication(sys.argv)
     main_window = EmmerichAutomatedTendingApp()
+    main_window.init_device()
     sys.exit(app.exec_())
