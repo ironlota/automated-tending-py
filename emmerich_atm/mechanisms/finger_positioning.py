@@ -16,12 +16,12 @@ class FingerPositioning(QtCore.QRunnable):
         self.sleep = OutputDevice(self.config['sleep_pin'], active_high=False)
 
         self.mutex = QtCore.QMutex()
-        
+
         self.stepper_x = Stepper(
             step_pin=self.config['x']['step_pin'],
             direction_pin=self.config['x']['direction_pin'],
             step_to_cm=self.config['x']['step_to_cm'])
-        
+
         self.stepper_y = Stepper(
             step_pin=self.config['y']['step_pin'],
             direction_pin=self.config['y']['direction_pin'],
@@ -31,17 +31,17 @@ class FingerPositioning(QtCore.QRunnable):
         self.sleep.off()
 
     def __del__(self):
-       self.threadpool.clear()
-       self.sleep.close()
-       self.stepper_x.close()
-       self.stepper_y.close()
+        self.threadpool.clear()
+        self.sleep.close()
+        self.stepper_x.close()
+        self.stepper_y.close()
 
     def log_step_x(self, x: int):
         print('Stepping x in {} steps'.format(x))
 
     def log_step_y(self, y: int):
         print('Stepping y in {} steps'.format(y))
-        
+
     def update_state_x(self, x: float):
         self.mutex.lock()
         State.coordinates.x += x
@@ -54,8 +54,7 @@ class FingerPositioning(QtCore.QRunnable):
 
     def finish(self):
         self.sleep.on()
-        print(State)
-        
+
     def run(self):
         stepper_x_worker = StepperRunnable(self.stepper_x,
                                            steps=100,
