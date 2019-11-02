@@ -17,7 +17,7 @@ class StepType(Enum):
     ONE_EIGHTH = 'ONE_EIGHTH'
     ONE_SIXTEENTH = 'ONE_SIXTEENTH'
 
-class Stepper(object):
+class Stepper():
     r"""Stepper Thread Wrapper for A4988 Motor Driver
 
     Arguments
@@ -79,7 +79,6 @@ class StepperRunnable(QtCore.QRunnable):
             step_delay (float) : delay between each step
         """
 
-        self.stepper.sleep.off()
         self.stepper.set_direction(reverse)
         self.stepper.set_step_type(step_type)
 
@@ -105,4 +104,4 @@ class StepperRunnable(QtCore.QRunnable):
         
     @QtCore.Slot()
     def run(self):
-        self.move(*self.args, **self.kwargs)
+       self.move(*self.args, **self.kwargs)

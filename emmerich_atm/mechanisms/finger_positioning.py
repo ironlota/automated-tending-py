@@ -28,6 +28,7 @@ class FingerPositioning(QtCore.QRunnable):
             step_to_cm=self.config['y']['step_to_cm'])
 
         self.threadpool = QtCore.QThreadPool()
+        self.sleep.off()
 
     def __del__(self):
         self.sleep.close()
@@ -49,6 +50,9 @@ class FingerPositioning(QtCore.QRunnable):
         self.mutex.lock()
         State.coordinates.y += y
         self.mutex.unlock()
+
+    def finish(self):
+        self.sleep.on()
         
     def run(self):
         # x: int,
@@ -60,6 +64,7 @@ class FingerPositioning(QtCore.QRunnable):
                                            reverse=True)
         stepper_x_worker.signals.move.connect(self.log_step_x)
         stepper_x_worker.signals.result.connect(self.update_state_x)
+        stepper_x_worker.signals.finished.connect(self.finish)
         
         self.threadpool.start(stepper_x_worker)
         # self.stepper_x.forward(x / 100, init_delay)
