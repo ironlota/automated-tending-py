@@ -1,7 +1,7 @@
 import time
 import sys
 import traceback
-from typing import NoReturn
+from typing import NoReturn, Callable, Any
 from enum import Enum
 
 from qtpy import QtCore
@@ -63,8 +63,18 @@ class StepperRunnable(QtCore.QRunnable):
         self.kwargs = kwargs
         self.signals = FingerMovementSignals()
 
+        # Add the callback to our kwargs
+        self.kwargs['move_callback'] = self.signals.move.emit
+        self.kwargs['error_callback'] = self.signals.error.emit
+        self.kwargs['result_callback'] = self.signals.result.emit
+        self.kwargs['finished_callback'] = self.signals.finished.emit
+
     def move(self,
              steps: int,
+             move_callback: Callable[[int], NoReturn],
+             error_callback: Callable[[(Any, Any, Any)], NoReturn],
+             result_callback: Callable[[float], NoReturn],
+             finished_callback: Callable[[], NoReturn],
              reverse: bool = False,
              step_type: StepType = StepType.FULL,
              init_delay: float = .0005,
@@ -90,17 +100,17 @@ class StepperRunnable(QtCore.QRunnable):
                 time.sleep(step_delay)
                 self.stepper.step.on()
                 time.sleep(step_delay)
-                self.signals.move.emit(i)
+                move_callback(i)
         except:
             exctype, value = sys.exc_info()[:2]
             traceback.print_exc()
-            self.signals.error.emit((exctype, value, traceback.format_exc()))
+            error_callback((exctype, value, traceback.format_exc()))
         else:
-            self.signals.result.emit(steps / self.stepper.step_to_cm)
+            result_callback(steps / self.stepper.step_to_cm)
         finally:
             self.stepper.step.off()
             self.stepper.direction.off()
-            self.signals.finished.emit()
+            finished_callback()
 
     @QtCore.Slot()
     def run(self):
