@@ -30,10 +30,10 @@ class FingerPositioning(QtCore.QRunnable):
         self.threadpool = QtCore.QThreadPool()
         self.sleep.off()
 
-    def __del__(self):
-        self.sleep.close()
-        self.stepper_x.close()
-        self.stepper_y.close()
+    # def __del__(self):
+    #    self.sleep.close()
+    #    self.stepper_x.close()
+    #    self.stepper_y.close()
 
     def log_step_x(self, x: int):
         print('Stepping x in {} steps'.format(x))
