@@ -4,7 +4,7 @@ State container
 
 from qtpy import QtCore
 
-from .utils.singleton import Singleton
+from .utils.singleton import SingletonQt
 
 class Point(QtCore.QObject):
     x: float = 0
@@ -25,7 +25,7 @@ GPIO 22 = Y STEP
 GPIO 25 = Y DIR
 """
 
-class State(QtCore.QObject, metaclass=Singleton):
+class State(QtCore.QObject, metaclass=SingletonQt):
     moved = QtCore.Signal(float, float)
 
     def __init__(self):

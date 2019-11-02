@@ -54,8 +54,8 @@ class Stepper():
 
 class StepperThread(QtCore.QThread):
     def __init__(self,
-                 parent: QtCore.QThread,
                  stepper: Stepper,
+                 parent: QtCore.QThread = None,
                  *args,
                  **kwargs):
         super(StepperThread, self).__init__(parent)
