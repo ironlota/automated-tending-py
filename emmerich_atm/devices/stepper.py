@@ -72,7 +72,7 @@ class StepperRunnable(QtCore.QRunnable):
     def move(self,
              steps: int,
              move_callback: Callable[[int], NoReturn],
-             error_callback: Callable[[(Any, Any, Any)], NoReturn],
+             error_callback,
              result_callback: Callable[[float], NoReturn],
              finished_callback: Callable[[], NoReturn],
              reverse: bool = False,
