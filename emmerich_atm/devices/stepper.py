@@ -58,7 +58,7 @@ class StepperRunnable(QtCore.QRunnable):
                  *args,
                  **kwargs):
         super(StepperRunnable, self).__init__()
-        self.stepper = Stepper
+        self.stepper = stepper
         self.args = args
         self.kwargs = kwargs
         self.signals = FingerMovementSignals()
@@ -101,7 +101,7 @@ class StepperRunnable(QtCore.QRunnable):
             self.stepper.step.off()
             self.stepper.direction.off()
             self.signals.finished.emit()
-        
+
     @QtCore.Slot()
     def run(self):
-       self.move(*self.args, **self.kwargs)
+        self.move(*self.args, **self.kwargs)
