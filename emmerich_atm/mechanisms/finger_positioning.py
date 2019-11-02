@@ -44,32 +44,38 @@ class FingerPositioning(QtCore.QRunnable):
 
     def update_state_x(self, x: float):
         self.mutex.lock()
-        State.coordinates.x += x
+        State.x += x
         self.mutex.unlock()
 
     def update_state_y(self, y: float):
         self.mutex.lock()
-        State.coordinates.y += y
+        State.y += y
         self.mutex.unlock()
 
     def finish(self):
         self.sleep.on()
 
+    @QtCore.Slot()
     def run(self):
-        stepper_x_worker = StepperRunnable(self.stepper_x,
+        stepper_x_worker = StepperRunnable(self,
+                                           self.stepper_x,
                                            steps=100,
                                            reverse=True)
         stepper_x_worker.signals.move.connect(self.log_step_x)
         stepper_x_worker.signals.result.connect(self.update_state_x)
         stepper_x_worker.signals.finished.connect(self.finish)
 
-        stepper_y_worker = StepperRunnable(self.stepper_y,
+        stepper_y_worker = StepperRunnable(self,
+                                           self.stepper_y,
                                            steps=100,
                                            reverse=True)
         stepper_y_worker.signals.move.connect(self.log_step_y)
         stepper_y_worker.signals.result.connect(self.update_state_y)
         stepper_y_worker.signals.finished.connect(self.finish)
 
-        self.threadpool.start(stepper_x_worker)
-        self.threadpool.start(stepper_y_worker)
-        self.threadpool.waitForDone()
+        stepper_x_worker.start()
+        stepper_y_worker.start()
+        
+        # self.threadpool.start(stepper_x_worker)
+        # self.threadpool.start(stepper_y_worker)
+        # self.threadpool.waitForDone()

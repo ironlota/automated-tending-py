@@ -52,12 +52,13 @@ class Stepper():
         self.step.close()
         self.direction.close()
 
-class StepperRunnable(QtCore.QRunnable):
+class StepperThread(QtCore.QThread):
     def __init__(self,
+                 parent: QtCore.QThread,
                  stepper: Stepper,
                  *args,
                  **kwargs):
-        super(StepperRunnable, self).__init__()
+        super(StepperThread, self).__init__(parent)
         self.stepper = stepper
         self.args = args
         self.kwargs = kwargs
