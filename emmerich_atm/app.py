@@ -1,31 +1,29 @@
 """
 Automated Tending Machine
 """
-
+ 
 import sys
+from qtpy import QtCore, QtWidgets
 
-from qtpy import QtWidgets
+from .utils.window import Window
+
+from .ui.main_window import Ui_MainWindow
 
 from .state import State
+from .mechanisms.finger_positioning import FingerPositioning
 
-from .stepper import Stepper
-
-class EmmerichAutomatedTendingApp(QtWidgets.QMainWindow):
+class EmmerichAutomatedTendingApp(Window):
     def __init__(self):
-        super().__init__()
-        self.init_ui()
-        self.stepper_x = Stepper(step_pin=23, direction_pin=24)
-        self.stepper_y = Stepper(step_pin=22, direction_pin=25)
-
-    def init_ui(self):
-        self.setWindowTitle('Emmerich Automated Tending')
+        super(EmmerichAutomatedTendingApp, self).__init__(Ui_MainWindow)
         self.show()
+        self.threadpool = QtCore.QThreadPool()
+        self.ui.tending_button.pressed.connect(self.init_finger_movement)
 
-    def init_device(self):
-        self.stepper_x.forward(200)
-        self.stepper_y.forward(300)
-
+    def init_finger_movement(self):
+        self.threadpool.start(FingerPositioning())
+ 
 def main():
     app = QtWidgets.QApplication(sys.argv)
     main_window = EmmerichAutomatedTendingApp()
+    # main_window.init_device()
     sys.exit(app.exec_())
