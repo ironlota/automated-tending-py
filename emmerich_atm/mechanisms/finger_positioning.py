@@ -19,17 +19,13 @@ class FingerPositioning(QtCore.QRunnable):
         
         self.stepper_x = Stepper(
             step_pin=self.config['x']['step_pin'],
-            direction_pin=self.config['x']['direction_pin'])
-        
-        self.stepper_x.signals.move.connect(self.log_step_x)
-        self.stepper_x.signals.result.connect(self.update_state_x)
+            direction_pin=self.config['x']['direction_pin'],
+            step_to_cm=self.config['x']['step_to_cm'])
         
         self.stepper_y = Stepper(
             step_pin=self.config['y']['step_pin'],
-            direction_pin=self.config['y']['direction_pin'])
-
-        self.stepper_y.signals.move.connect(self.log_step_y)
-        self.stepper_y.signals.result.connect(self.update_state_y)
+            direction_pin=self.config['y']['direction_pin'],
+            step_to_cm=self.config['y']['step_to_cm'])
 
         self.threadpool = QtCore.QThreadPool()
 
@@ -62,6 +58,9 @@ class FingerPositioning(QtCore.QRunnable):
         stepper_x_worker = StepperRunnable(self.stepper_x,
                                            steps=100,
                                            reverse=True)
+        stepper_x_worker.signals.move.connect(self.log_step_x)
+        stepper_x_worker.signals.result.connect(self.update_state_x)
+        
         self.threadpool.start(stepper_x_worker)
         # self.stepper_x.forward(x / 100, init_delay)
         # self.stepper_y.forward(y / 100)
