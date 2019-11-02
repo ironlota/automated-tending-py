@@ -12,7 +12,7 @@ from ..devices.stepper import Stepper, StepperRunnable
 class FingerPositioning(QtCore.QRunnable):
     def __init__(self):
         super(FingerPositioning, self).__init__()
-        self.config = Config.get_config()['positioning']
+        self.config = Config().get_config()['finger']['positioning']
         self.sleep = OutputDevice(self.config['sleep_pin'], active_high=False)
 
         self.mutex = QtCore.QMutex()
