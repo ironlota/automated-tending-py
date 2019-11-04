@@ -9,7 +9,7 @@ from ..state import State
 
 from ..devices.stepper import Stepper, StepperThread
 
-class FingerPositioning(QtCore.QRunnable):
+class FingerPositioning(QtCore.QThread):
     def __init__(self):
         super(FingerPositioning, self).__init__()
         self.config = Config().config['finger']['positioning']
@@ -80,6 +80,8 @@ class FingerPositioning(QtCore.QRunnable):
 
         stepper_x_worker.start()
         stepper_y_worker.start()
+        stepper_x_worker.wait()
+        stepper_y_worker.wait()
         
         # self.threadpool.start(stepper_x_worker)
         # self.threadpool.start(stepper_y_worker)
