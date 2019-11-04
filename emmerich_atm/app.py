@@ -22,8 +22,6 @@ class EmmerichAutomatedTendingApp(Window):
 
     def init_finger_movement(self):
         self.finger_positioning_thread.start()
-        self.finger_positioning_thread.wait()
-        self.finger_positioning_thread.quit()
         # self.threadpool.start(FingerPositioning())
  
 def main():
