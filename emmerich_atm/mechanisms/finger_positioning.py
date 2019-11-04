@@ -15,7 +15,10 @@ class FingerPositioning(QtCore.QThread):
         self.config = Config().config['finger']['positioning']
         self.sleep = OutputDevice(self.config['sleep_pin'], active_high=False)
 
-        self.mutex = QtCore.QMutex()
+        self.mutex_x = QtCore.QMutex()
+        self.mutex_y = QtCore.QMutex()
+
+        self.state = State()
 
         self.stepper_x = Stepper(
             step_pin=self.config['x']['step_pin'],
@@ -44,15 +47,15 @@ class FingerPositioning(QtCore.QThread):
 
     @QtCore.Slot()
     def update_state_x(self, x: float):
-        self.mutex.lock()
-        State.x += x
-        self.mutex.unlock()
+        self.mutex_x.lock()
+        self.state.x += x
+        self.mutex_x.unlock()
 
     @QtCore.Slot()
     def update_state_y(self, y: float):
-        self.mutex.lock()
-        State.y += y
-        self.mutex.unlock()
+        self.mutex_y.lock()
+        self.state.y += y
+        self.mutex_y.unlock()
 
     @QtCore.Slot()
     def finish(self):
