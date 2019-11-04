@@ -221,6 +221,14 @@ mac_alias = ">=2.0.1"
 
 [[package]]
 category = "dev"
+description = "Easy to use python subprocess interface."
+name = "easyprocess"
+optional = false
+python-versions = "*"
+version = "0.2.7"
+
+[[package]]
+category = "dev"
 description = "Discover and load entry points from installed packages."
 name = "entrypoints"
 optional = false
@@ -558,6 +566,18 @@ pytest-forked = "*"
 six = "*"
 
 [[package]]
+category = "dev"
+description = "A pytest plugin to run Xvfb for tests."
+name = "pytest-xvfb"
+optional = false
+python-versions = "*"
+version = "1.2.0"
+
+[package.dependencies]
+pytest = ">=2.8.1"
+pyvirtualdisplay = ">=0.2.1"
+
+[[package]]
 category = "main"
 description = "Extensions to the standard Python datetime module"
 name = "python-dateutil"
@@ -567,6 +587,17 @@ version = "2.8.1"
 
 [package.dependencies]
 six = ">=1.5"
+
+[[package]]
+category = "dev"
+description = "python wrapper for Xvfb, Xephyr and Xvnc"
+name = "pyvirtualdisplay"
+optional = false
+python-versions = "*"
+version = "0.2.4"
+
+[package.dependencies]
+EasyProcess = "*"
 
 [[package]]
 category = "main"
@@ -687,7 +718,7 @@ version = "0.6.0"
 more-itertools = "*"
 
 [metadata]
-content-hash = "80c686dde2e01388c79e64a03664946a43dfd0d77cbe8d44cc933b7669d6f547"
+content-hash = "e553e2202f8762825586a35f4dbb8bcf1d3b4d8ee6d02193a6070b34f2a14a16"
 python-versions = "^3.5"
 
 [metadata.hashes]
@@ -711,6 +742,7 @@ coverage = ["08907593569fe59baca0bf152c43f3863201efb6113ecb38ce7e97ce339805a6", 
 dmgbuild = ["2004a3a304bd29ac541af990a2b1d531b82c49f9465dbbf33e5b30efc48b620d"]
 docutils = ["6c4f696463b79f1fb8ba0c594b63840ebd41f059e92b31957c46b74a4599b6d0", "9e4d7ecfc600058e07ba661411a2b7de2fd0fafa17d1a7f7361cd47b1175c827", "a2aeea129088da402665e92e0b25b04b073c04b2dce4ab65caaa38b7ce2e1a99"]
 ds-store = ["f569659cfd66b21273c5a2405d5e1e0f54fddebf627130329f01404f271a074c"]
+easyprocess = ["e1871651a3c9f192090c6f523f48bc73ba6ec651530a8c4cd7e2776a4c54d795", "f757cd16cdab5b87117b4ee6cf197f99bfa109253364c7bd717ad0bcd39218a0"]
 entrypoints = ["589f874b313739ad35be6e0cd7efde2a4e9b6fea91edcc34e58ecbb8dbe56d19", "c70dd71abe5a8c85e55e12c19bd91ccfeec11a6e99044204511f9ed547d48451"]
 execnet = ["cacb9df31c9680ec5f95553976c4da484d407e85e41c83cb812aa014f0eddc50", "d4efd397930c46415f62f8a31388d6be4f27a91d7550eb79bc64a756e0056547"]
 flake8 = ["45681a117ecc81e870cbf1262835ae4af5e7a8b08e40b944a8a6e6b895914cfb", "49356e766643ad15072a789a20915d3c91dc89fd313ccd71802303fd67e4deca"]
@@ -743,7 +775,9 @@ pytest-forked = ["1805699ed9c9e60cb7a8179b8d4fa2b8898098e82d229b0825d8095f0f2611
 pytest-mock = ["b3514caac35fe3f05555923eabd9546abce11571cc2ddf7d8615959d04f2c89e", "ea502c3891599c26243a3a847ccf0b1d20556678c528f86c98e3cd6d40c5cf11"]
 pytest-qt = ["05b9c913f373fee19c69d8f2951e5ae3f123d7c3350c88015c8320f484b0b516", "f6ecf4b38088ae1092cbd5beeaf714516d1f81f8938626a2eac546206cdfe7fa"]
 pytest-xdist = ["5d1b1d4461518a6023d56dab62fb63670d6f7537f23e2708459a557329accf48", "a8569b027db70112b290911ce2ed732121876632fb3f40b1d39cd2f72f58b147"]
+pytest-xvfb = ["a7544ca8d0c7c40db4b40d7a417a7b071c68d6ef6bdf9700872d7a167302f979"]
 python-dateutil = ["73ebfe9dbf22e832286dafa60473e4cd239f8592f699aa5adaf10050e6e1823c", "75bb3f31ea686f1197762692a9ee6a7550b59fc6ca3a1f4b5d7e32fb98e2da2a"]
+pyvirtualdisplay = ["07f50759205adaeeb255a88be0ac1dce68da80686e6ca1fc362f4aa54fdbcb5b", "877f9ac9b8344d4bb8f6f4ec0db78db5dabb8f1240b692989e40a330d6fadd6e"]
 pyyaml = ["0113bc0ec2ad727182326b61326afa3d1d8280ae1122493553fd6f4397f33df9", "01adf0b6c6f61bd11af6e10ca52b7d4057dd0be0343eb9283c878cf3af56aee4", "5124373960b0b3f4aa7df1707e63e9f109b5263eca5976c66e08b1c552d4eaf8", "5ca4f10adbddae56d824b2c09668e91219bb178a1eee1faa56af6f99f11bf696", "7907be34ffa3c5a32b60b95f4d95ea25361c951383a894fec31be7252b2b6f34", "7ec9b2a4ed5cad025c2278a1e6a19c011c80a3caaac804fd2d329e9cc2c287c9", "87ae4c829bb25b9fe99cf71fbb2140c448f534e24c998cc60f39ae4f94396a73", "9de9919becc9cc2ff03637872a440195ac4241c80536632fffeb6a1e25a74299", "a5a85b10e450c66b49f98846937e8cfca1db3127a9d5d1e31ca45c3d0bef4c5b", "b0997827b4f6a7c286c01c5f60384d218dca4ed7d9efa945c3e1aa623d5709ae", "b631ef96d3222e62861443cc89d6563ba3eeb816eeb96b2629345ab795e53681", "bf47c0607522fdbca6c9e817a6e81b08491de50f3766a7a0e6a5be7905961b41", "f81025eddd0327c7d4cfe9b62cf33190e1e736cc6e97502b3ec425f574b3e7a8"]
 qtpy = ["2db72c44b55d0fe1407be8fba35c838ad0d6d3bb81f23007886dc1fc0f459c8d", "fa0b8363b363e89b2a6f49eddc162a04c0699ae95e109a6be3bb145a913190ea"]
 requests = ["11e007a8a2aa0323f5a921e9e6a2d7e4e67d9877e85773fba9ba6419025cbeb4", "9cf5292fcd0f598c671cfc1e0d7d1a7f13bb8085e9a590f48c010551dc6c4b31"]
