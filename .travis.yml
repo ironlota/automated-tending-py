@@ -1,0 +1,12 @@
+language: python
+python:
+    - "3.6"
+before_install:
+    - curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
+    - poetry install
+script:
+    - while sleep 540; do echo "=====[ $SECONDS seconds still running ]====="; done &
+    - poetry run pytest tests
+    - kill %1
+after_success:
+    - coveralls

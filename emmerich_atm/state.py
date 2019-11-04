@@ -4,6 +4,8 @@ State container
 
 from qtpy import QtCore
 
+from typing import NoReturn
+
 from .utils.singleton import SingletonQt
 
 class Point(QtCore.QObject):
@@ -17,42 +19,41 @@ class Point(QtCore.QObject):
         """
         return (self.x == 0.0 and self.y == 0)
     
-"""
-GPIO    = SLEEP
-GPIO 23 = X STEP
-GPIO 24 = X DIR
-GPIO 22 = Y STEP
-GPIO 25 = Y DIR
-"""
-
 class State(QtCore.QObject, metaclass=SingletonQt):
+    ## States
+    _coordinates = Point()
+
+    ## Signals
     moved = QtCore.Signal(float, float)
 
-    def __init__(self):
-        self.coordinates = Point()
+    ## Public methods
+    def reset_coordinates(self):
+        self._coordinates = Point()
 
-    @property
-    def coordinates(self) -> Point:
-        return self.coordinates
+    ## Private methods
+    def _get_coordinates(self) -> Point:
+        return self._coordinates
 
-    @property
-    def x(self) -> float:
-        return self.coordinates.x
+    def _set_coordinates(self, coordinates: Point) -> Point:
+        self._coordinates = coordinates
+        self.moved.emit(coordinates.x, coordinates.y)
 
-    @property
-    def y(self) -> float:
-        return self.coordinates.y
+    def _get_x(self) -> float:
+        return self._coordinates.x
 
-    @x.setter
-    def x(self, new_x: float):
-        self.coordinates.x = new_x
-        # After the center is moved, emit the moved
-        # signal with the new coordinates
+    def _set_x(self, new_x: float) -> NoReturn:
+        self._coordinates.x = new_x
         self.moved.emit(new_x, self.y)
+    
+    def _get_y(self) -> float:
+        return self._coordinates.y
 
-    @y.setter
-    def y(self, new_y: float):
+    def _set_y(self, new_y: float) -> NoReturn:
         self.coordinates.y = new_y
-        # After the center is moved, emit the moved
-        # signal with the new coordinates
         self.moved.emit(self.x, new_y)
+
+    ## Custom Properties
+    coordinates = property(_get_coordinates, _set_coordinates)
+    x = property(_get_x, _set_x)
+    y = property(_get_y, _set_y)
+    

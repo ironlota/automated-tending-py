@@ -1,11 +1,12 @@
 import yaml
 
-from .utils.singleton import Singleton
+from .utils.singleton import SingletonQt
 
-class Config(metaclass=Singleton):
-    def __init__(self):
-        with open("config.yaml", 'r') as ymlfile:
-            self.cfg = yaml.safe_load(ymlfile)
+class Config(metaclass=SingletonQt):
+    def __init__(self, filename='config.yaml'):
+        with open(filename, 'r') as ymlfile:
+            self._cfg = yaml.safe_load(ymlfile)
 
-    def get_config(self):
-        return self.cfg
+    @property
+    def config(self):
+        return self._cfg

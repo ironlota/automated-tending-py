@@ -65,11 +65,12 @@ class StepperThread(QtCore.QThread):
         self.signals = FingerMovementSignals()
 
         # Add the callback to our kwargs
-        self.kwargs['move_callback'] = self.signals.move.emit
-        self.kwargs['error_callback'] = self.signals.error.emit
-        self.kwargs['result_callback'] = self.signals.result.emit
-        self.kwargs['finished_callback'] = self.signals.finished.emit
+        self.kwargs['move_callback'] = self.signals.move
+        self.kwargs['error_callback'] = self.signals.error
+        self.kwargs['result_callback'] = self.signals.result
+        self.kwargs['finished_callback'] = self.signals.finished
 
+    @QtCore.Slot()
     def move(self,
              steps: int,
              move_callback: Callable[[int], NoReturn],
@@ -78,8 +79,8 @@ class StepperThread(QtCore.QThread):
              finished_callback: Callable[[], NoReturn],
              reverse: bool = False,
              step_type: StepType = StepType.FULL,
-             init_delay: float = .0005,
-             step_delay: float = .0005) -> NoReturn:
+             init_delay: float = .005,
+             step_delay: float = .005) -> NoReturn:
         r"""Forward movements.
 
         Arguments
@@ -93,25 +94,24 @@ class StepperThread(QtCore.QThread):
         self.stepper.set_direction(reverse)
         self.stepper.set_step_type(step_type)
 
-        time.sleep(init_delay)
+        self.sleep(init_delay)
 
         try:
             for i in range(steps):
                 self.stepper.step.off()
-                time.sleep(step_delay)
+                self.sleep(step_delay)
                 self.stepper.step.on()
-                time.sleep(step_delay)
-                move_callback(i)
+                move_callback.emit(i)
         except:
             exctype, value = sys.exc_info()[:2]
             traceback.print_exc()
-            error_callback((exctype, value, traceback.format_exc()))
+            error_callback.emit((exctype, value, traceback.format_exc()))
         else:
-            result_callback(steps / self.stepper.step_to_cm)
+            result_callback.emit(steps / self.stepper.step_to_cm)
         finally:
             self.stepper.step.off()
             self.stepper.direction.off()
-            finished_callback()
+            finished_callback.emit()
 
     @QtCore.Slot()
     def run(self):
