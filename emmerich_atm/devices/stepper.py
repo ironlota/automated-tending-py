@@ -1,7 +1,7 @@
 import time
 import sys
 import traceback
-from typing import NoReturn, Callable, Any
+from typing import Callable, Any
 from enum import Enum
 
 from qtpy import QtCore
@@ -42,13 +42,13 @@ class Stepper():
     def set_step_type(self, step_type: StepType):
         self.step_type = step_type
 
-    def set_direction(self, reverse: bool) -> NoReturn:
+    def set_direction(self, reverse: bool) -> None:
         if (reverse):
             self.direction.on()
         else:
             self.direction.off()
 
-    def close(self) -> NoReturn:
+    def close(self) -> None:
         self.step.close()
         self.direction.close()
 
@@ -73,14 +73,14 @@ class StepperThread(QtCore.QThread):
     @QtCore.Slot()
     def move(self,
              steps: int,
-             move_callback: Callable[[int], NoReturn],
+             move_callback: Callable[[int], None],
              error_callback,
-             result_callback: Callable[[float], NoReturn],
-             finished_callback: Callable[[], NoReturn],
+             result_callback: Callable[[float], None],
+             finished_callback: Callable[[], None],
              reverse: bool = False,
              step_type: StepType = StepType.FULL,
              init_delay: float = .005,
-             step_delay: float = .005) -> NoReturn:
+             step_delay: float = .005) -> None:
         r"""Forward movements.
 
         Arguments

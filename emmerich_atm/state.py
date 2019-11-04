@@ -4,8 +4,6 @@ State container
 
 from qtpy import QtCore
 
-from typing import NoReturn
-
 from .utils.singleton import SingletonQt
 
 class Point(QtCore.QObject):
@@ -41,14 +39,14 @@ class State(QtCore.QObject, metaclass=SingletonQt):
     def _get_x(self) -> float:
         return self._coordinates.x
 
-    def _set_x(self, new_x: float) -> NoReturn:
+    def _set_x(self, new_x: float) -> None:
         self._coordinates.x = new_x
         self.moved.emit(new_x, self.y)
     
     def _get_y(self) -> float:
         return self._coordinates.y
 
-    def _set_y(self, new_y: float) -> NoReturn:
+    def _set_y(self, new_y: float) -> None:
         self.coordinates.y = new_y
         self.moved.emit(self.x, new_y)
 
