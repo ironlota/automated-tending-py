@@ -27,11 +27,9 @@ class FingerPositioning(QtCore.QThread):
             direction_pin=self.config['y']['direction_pin'],
             step_to_cm=self.config['y']['step_to_cm'])
 
-        self.threadpool = QtCore.QThreadPool()
         self.sleep.off()
 
     def __del__(self):
-        self.threadpool.clear()
         self.sleep.close()
         self.stepper_x.close()
         self.stepper_y.close()
