@@ -30,11 +30,31 @@ class FingerPositioning(QtCore.QRunnable):
             direction_pin=self.config['y']['direction_pin'],
             step_to_cm=self.config['y']['step_to_cm'])
 
+        
+        self.stepper_x_worker = StepperThread(stepper=self.stepper_x,
+                                               parent=self,
+                                               steps=100,
+                                               reverse=True)
+
+        self.stepper_x_worker.signals.move.connect(self.log_step_x)
+        self.stepper_x_worker.signals.result.connect(self.update_state_x)
+        self.stepper_x_worker.signals.finished.connect(self.finish)
+
+        self.stepper_y_worker = StepperThread(stepper=self.stepper_y,
+                                              parent=self,
+                                              steps=100,
+                                              reverse=True)
+        self.stepper_y_worker.signals.move.connect(self.log_step_y)
+        self.stepper_y_worker.signals.result.connect(self.update_state_y)
+        self.stepper_y_worker.signals.finished.connect(self.finish)
+        
         self.threadpool = QtCore.QThreadPool()
 
         self.sleep.off()
 
     def __del__(self):
+        self.stepper_x_worker.quit()
+        self.stepper_y_worker.quit()
         self.threadpool.clear()
         self.sleep.close()
         self.stepper_x.close()
@@ -66,33 +86,29 @@ class FingerPositioning(QtCore.QRunnable):
 
     @QtCore.Slot()
     def run(self):
-        # stepper_x_worker = StepperThread(stepper=self.stepper_x,
-        #                                  parent=self,
-        #                                  steps=100,
-        #                                  reverse=True)
-        stepper_x_worker = StepperRunnable(stepper=self.stepper_x,
-                                           steps=1000,
-                                           reverse=True)
-        stepper_x_worker.signals.move.connect(self.log_step_x)
-        stepper_x_worker.signals.result.connect(self.update_state_x)
-        stepper_x_worker.signals.finished.connect(self.finish)
+        # stepper_x_worker = StepperRunnable(stepper=self.stepper_x,
+        #                                    steps=1000,
+        #                                    reverse=True)
+        # stepper_x_worker.signals.move.connect(self.log_step_x)
+        # stepper_x_worker.signals.result.connect(self.update_state_x)
+        # stepper_x_worker.signals.finished.connect(self.finish)
 
         # stepper_y_worker = StepperThread(stepper=self.stepper_y,
         #                                  parent=self,
         #                                  steps=100,
         #                                  reverse=True)
-        stepper_y_worker = StepperRunnable(stepper=self.stepper_y,
-                                           steps=1000,
-                                           reverse=True)
-        stepper_y_worker.signals.move.connect(self.log_step_y)
-        stepper_y_worker.signals.result.connect(self.update_state_y)
-        stepper_y_worker.signals.finished.connect(self.finish)
+        # stepper_y_worker = StepperRunnable(stepper=self.stepper_y,
+        #                                    steps=1000,
+        #                                    reverse=True)
+        # stepper_y_worker.signals.move.connect(self.log_step_y)
+        # stepper_y_worker.signals.result.connect(self.update_state_y)
+        # stepper_y_worker.signals.finished.connect(self.finish)
 
-        # stepper_x_worker.start()
-        # stepper_y_worker.start()
+        self.stepper_x_worker.start()
+        self.stepper_y_worker.start()
         # stepper_y_worker.wait()
         # stepper_x_worker.wait()
         
-        self.threadpool.start(stepper_x_worker)
-        self.threadpool.start(stepper_y_worker)
-        self.threadpool.waitForDone()
+        # self.threadpool.start(stepper_x_worker)
+        # self.threadpool.start(stepper_y_worker)
+        # self.threadpool.waitForDone()

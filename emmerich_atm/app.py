@@ -17,11 +17,14 @@ class EmmerichAutomatedTendingApp(Window):
         super(EmmerichAutomatedTendingApp, self).__init__(Ui_MainWindow)
         self.show()
         self.ui.tending_button.pressed.connect(self.init_finger_movement)
-        self.threadpool = QtCore.QThreadPool()
-        # self.finger_positioning_thread = FingerPositioning()
+        # self.threadpool = QtCore.QThreadPool()
+        self.finger_positioning_thread = FingerPositioning()
 
     def init_finger_movement(self):
-        self.threadpool.start(FingerPositioning())
+        self.finger_positioning_thread.start()
+        self.finger_positioning_thread.wait()
+        self.finger_positioning_thread.quit()
+        # self.threadpool.start(FingerPositioning())
  
 def main():
     app = QtWidgets.QApplication(sys.argv)
