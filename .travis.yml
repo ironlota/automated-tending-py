@@ -1,8 +1,9 @@
+dist: xenial
+services:
+  - xvfb
 language: python
 python:
     - "3.7"
-services:
-  - xvfb
 before_install:
     - curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
     - source $HOME/.poetry/env
