@@ -158,13 +158,14 @@ class StepperRunnable(QtCore.QRunnable):
         self.stepper.set_direction(reverse)
         self.stepper.set_step_type(step_type)
 
-        self.sleep(init_delay)
+        time.sleep(init_delay)
 
         try:
             for i in range(steps):
                 self.stepper.step.off()
-                self.sleep(step_delay)
+                time.sleep(step_delay)
                 self.stepper.step.on()
+                time.sleep(step_delay)
                 move_callback.emit(i)
         except:
             exctype, value = sys.exc_info()[:2]
