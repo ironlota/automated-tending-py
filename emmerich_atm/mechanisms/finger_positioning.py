@@ -62,16 +62,16 @@ class FingerPositioning(QtCore.QRunnable):
 
     @QtCore.Slot()
     def run(self):
-        stepper_x_worker = StepperThread(self,
-                                         self.stepper_x,
+        stepper_x_worker = StepperThread(stepper=self.stepper_x,
+                                         parent=self,
                                          steps=100,
                                          reverse=True)
         stepper_x_worker.signals.move.connect(self.log_step_x)
         stepper_x_worker.signals.result.connect(self.update_state_x)
         stepper_x_worker.signals.finished.connect(self.finish)
 
-        stepper_y_worker = StepperThread(self,
-                                         self.stepper_y,
+        stepper_y_worker = StepperThread(stepper=self.stepper_y,
+                                         parent=self,
                                          steps=100,
                                          reverse=True)
         stepper_y_worker.signals.move.connect(self.log_step_y)
