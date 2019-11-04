@@ -7,6 +7,6 @@ before_install:
 script:
     - while sleep 540; do echo "=====[ $SECONDS seconds still running ]====="; done &
     - poetry run pytest tests
-    - kill %1
+    - pip install codecov
 after_success:
-    - coveralls
+    - codecov
