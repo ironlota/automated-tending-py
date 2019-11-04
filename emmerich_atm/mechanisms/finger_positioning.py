@@ -53,8 +53,6 @@ class FingerPositioning(QtCore.QThread):
         self.sleep.off()
 
     def __del__(self):
-        self.stepper_x_worker.quit()
-        self.stepper_y_worker.quit()
         self.threadpool.clear()
         self.sleep.close()
         self.stepper_x.close()
@@ -94,10 +92,10 @@ class FingerPositioning(QtCore.QThread):
         stepper_x_worker.signals.result.connect(self.update_state_x)
         stepper_x_worker.signals.finished.connect(self.finish)
         
-        stepper_y_worker = StepperThread(stepper=self.stepper_y,
-                                         parent=self,
-                                         steps=100,
-                                         reverse=True)
+        # stepper_y_worker = StepperThread(stepper=self.stepper_y,
+        #                                  parent=self,
+        #                                  steps=100,
+        #                                  reverse=True)
         stepper_y_worker = StepperRunnable(stepper=self.stepper_y,
                                            steps=1000,
                                            reverse=True)
